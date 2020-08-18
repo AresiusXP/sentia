@@ -20,10 +20,17 @@
           "metadata": {
               "description": "Password for MySQL sa user."
           }
+      },
+      "omsWorkspaceName": {
+          "type": "string",
+          "metadata": {
+              "description": "Log Analytics Workspace name for diagnostic settings."
+          }
       }
     },
     "variables": {
-        "templatesUri": "https://raw.githubusercontent.com/AresiusXP/sentia/master/ARM/"
+        "templatesUri": "https://raw.githubusercontent.com/AresiusXP/sentia/master/ARM/",
+        "workspaceId": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('omsWorkspaceName'))]"
     },
     "resources": [
         {
@@ -99,6 +106,26 @@
                 "parameters": {
                     "acrReplicaLocation": {
                         "value": "[parameters('secondaryLocation')]"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2017-05-10",
+            "name": "redis",
+            "resourceGroup": "[parameters('rgName')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/resourceGroups/', parameters('rgName'))]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('templatesUri'), 'Redis/redis.json')]"
+                },
+                "parameters": {
+                    "workspaceId": {
+                        "value": "[variables('workspaceId')]"
                     }
                 }
             }
