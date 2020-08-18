@@ -6,7 +6,17 @@
         "type": "string"
       },
       "location": {
-        "type": "string"
+        "type": "string",
+        "defaultValue": "[deployment().location]"
+      },
+      "spnObjectId": {
+          "type": "string"
+      },
+      "mySqlPass": {
+          "type": "securestring",
+          "metadata": {
+              "description": "Password for MySQL sa user."
+          }
       }
     },
     "variables": {
@@ -32,6 +42,39 @@
                 "mode": "Incremental",
                 "templateLink": {
                     "uri": "[concat(variables('templatesUri'), 'ResourceGroup1/Storage/storage.json')]"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2017-05-10",
+            "name": "networking",
+            "resourceGroup": "[parameters('rgName')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/resourceGroups/', parameters('rgName'))]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('templatesUri'), 'ResourceGroup1/Networking/networking.json')]"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2017-05-10",
+            "name": "keyvault",
+            "resourceGroup": "[parameters('rgName')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/resourceGroups/', parameters('rgName'))]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('templatesUri'), 'ResourceGroup1/KeyVault/keyvault.json')]"
+                },
+                "parameters": {
+                    "objectId": "[parameters('spnObjectId')]"
                 }
             }
         }
