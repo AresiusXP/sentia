@@ -71,7 +71,7 @@
         },
         "vnet": {
             "type": "string",
-            "value": ""
+            "value": "[resourceId('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
         }
     }
   }
