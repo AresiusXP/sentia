@@ -1,0 +1,71 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "rgName": {
+        "type": "string"
+      },
+      "azureLogAnalyticsName": {
+        "type": "string"
+      },
+      "location": {
+        "type": "string"
+      },
+      "sku": {
+        "type": "string"
+      },
+      "dataRetention": {
+        "type": "int"
+      },
+      "immediatePurgeDataOn30Days": {
+        "type": "bool"
+      }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Resources/resourceGroups",
+            "apiVersion": "2018-05-01",
+            "location": "[parameters('location')]",
+            "name": "[parameters('rgName')]",
+            "properties": {}
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2017-05-10",
+            "name": "workspaceDeployment",
+            "resourceGroup": "[parameters('rgName')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/resourceGroups/', parameters('rgName'))]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {},
+                    "variables": {},
+                    "resources": [
+                        {
+                          "name": "[parameters('azureLogAnalyticsName')]",
+                          "type": "Microsoft.OperationalInsights/workspaces",
+                          "apiVersion": "2020-03-01-preview",
+                          "location": "[parameters('location')]",
+                          "properties": {
+                          "retentionInDays": "[parameters('dataRetention')]",
+                          "features": { 
+                                  "immediatePurgeDataOn30Days": "[parameters('immediatePurgeDataOn30Days')]"
+                              },
+                              "sku": { 
+                                  "name": "[parameters('sku')]"
+                              }
+                          }
+                      }
+                    ],
+                    "outputs": {}
+                }
+            }
+        }
+    ],
+    "outputs": {}
+  }
