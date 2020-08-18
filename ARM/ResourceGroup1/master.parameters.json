@@ -1,0 +1,12 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "rgName": {
+        "value": "test"
+      },
+      "spnObjectId": {
+          "value": "e0e6d050-c767-4ae6-b18a-a6160b499434"
+      }
+    }
+}
