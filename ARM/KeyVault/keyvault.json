@@ -4,7 +4,9 @@
     "parameters": {
       "keyVaultName": {
         "type": "string",
-        "defaultValue": "sentiaAKV",
+        "defaultValue": "[concat('akv', uniqueString(resourceGroup().id))]",
+        "minLength": 5,
+        "maxLength": 50,
         "metadata": {
           "description": "Specifies the name of the key vault."
         }
