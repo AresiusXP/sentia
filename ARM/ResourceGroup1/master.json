@@ -74,7 +74,9 @@
                     "uri": "[concat(variables('templatesUri'), 'ResourceGroup1/KeyVault/keyvault.json')]"
                 },
                 "parameters": {
-                    "objectId": "[parameters('spnObjectId')]"
+                    "objectId": {
+                        "value": "[parameters('spnObjectId')]"
+                    }
                 }
             }
         }
