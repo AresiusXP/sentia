@@ -6,26 +6,26 @@
         "type": "string",
         "defaultValue": "[resourceGroup().location]"
       },
-      "dateTimeNow": {
-          "type": "string",
-          "defaultValue": "[utcNow('yyyy-MM-ddTHH:mm:ssZ')]"
-      },
       "secondary": {
         "type": "bool",
         "defaultValue": false
+      },
+      "virtualNetworkName": {
+        "type": "string"
+      },
+      "subnet1Name": {
+        "type": "string"
       }
     },
     "variables": {
-      "virtualNetworkName": "[concat('vnet', uniqueString(parameters('dateTimeNow')))]",
-      "subnet1Name": "[concat('subnet', uniqueString(parameters('dateTimeNow')))]",
-      "networkSecurityGroupName": "[concat(variables('subnet1Name'), '-nsg')]",
+      "networkSecurityGroupName": "[concat(parameters('subnet1Name'), '-nsg')]",
       "addressPrefix": "[if(bool(parameters('secondary')),'10.1.0.0/16','10.0.0.0/16')]",
       "addressPrefixSubnet": "[if(bool(parameters('secondary')),'10.1.0.0/24','10.0.0.0/24')]"
     },
     "resources": [
       {
         "type": "Microsoft.Network/virtualNetworks",
-        "name": "[variables('virtualNetworkName')]",
+        "name": "[parameters('virtualNetworkName')]",
         "apiVersion": "2020-05-01",
         "location": "[parameters('location')]",
         "dependsOn": [
@@ -39,7 +39,7 @@
           },
           "subnets": [
             {
-              "name": "[variables('subnet1Name')]",
+              "name": "[parameters('subnet1Name')]",
               "properties": {
                 "addressPrefix": "[variables('addressPrefixSubnet')]",
                 "networkSecurityGroup": {
@@ -75,21 +75,21 @@
       }
     ],
     "outputs": {
-        "subnet": {
-            "type": "string",
-            "value": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), variables('subnet1Name'))]"
-        },
         "vnet": {
             "type": "string",
-            "value": "[resourceId('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
+            "value": "[reference(parameters('virtualNetworkName'), '2019-04-01', 'Full').resourceId]"
+        },
+        "subnet": {
+            "type": "string",
+            "value": "[reference(parameters('virtualNetworkName'), '2019-04-01', 'Full').subnets[0].resourceId]"
         },
         "subnetName": {
             "type": "string",
-            "value": "[variables('subnet1Name')]"
+            "value": "[parameters('subnet1Name')]"
         },
         "vnetName": {
             "type": "string",
-            "value": "[variables('virtualNetworkName')]"
+            "value": "[parameters('virtualNetworkName')]"
         }
     }
   }

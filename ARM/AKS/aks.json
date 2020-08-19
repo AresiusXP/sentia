@@ -142,15 +142,21 @@
         },
         "secondaryNetwork": {
             "type": "bool"
+        },
+        "dateTimeNow": {
+          "type": "string",
+          "defaultValue": "[utcNow('yyyy-MM-ddTHH:mm:ssZ')]"
         }
     },
     "variables": {
-        "templatesUri": "https://raw.githubusercontent.com/AresiusXP/sentia/master/ARM/"
+        "templatesUri": "https://raw.githubusercontent.com/AresiusXP/sentia/master/ARM/",
+        "virtualNetworkName": "[concat('vnet', uniqueString(parameters('dateTimeNow')))]",
+        "subnet1Name": "[concat('subnet', uniqueString(parameters('dateTimeNow')))]"
     },
     "resources": [
         {
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2017-05-10",
+            "apiVersion": "2020-07-01",
             "name": "networking",
             "properties": {
                 "mode": "Incremental",
@@ -163,6 +169,12 @@
                     },
                     "secondary": {
                         "value": "[parameters('secondaryNetwork')]"
+                    },
+                    "subnetName": {
+                        "value": "[variables('subnet1Name')]"
+                    },
+                    "vnetName": {
+                        "value": "[variables('virtualNetworkName')]"
                     }
                 }
             }
@@ -204,7 +216,7 @@
                         "maxCount": 6,
                         "minCount": "[parameters('agentCount')]",
                         "storageProfile": "ManagedDisks",
-                        "vnetSubnetID": "[resourceId('Microsoft.Network/virtualNetworks/subnets', reference('networking').outputs.vnetName.value, reference('networking').outputs.subnetName.value)]",
+                        "vnetSubnetID": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), variables('subnet1Name'))]",
                         "maxPods": "[parameters('maxPods')]",
                         "type": "VirtualMachineScaleSets"
                     }
