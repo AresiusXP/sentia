@@ -139,6 +139,9 @@
             "metadata": {
                 "description": "Log Analytics Workspace resource ID."
             }
+        },
+        "secondaryNetwork": {
+            "type": "bool"
         }
     },
     "variables": {
@@ -157,6 +160,9 @@
                 "parameters": {
                    "location": {
                        "value": "[parameters('location')]"
+                    },
+                    "secondary": {
+                        "value": "[parameters('secondaryNetwork')]"
                     }
                 }
             }

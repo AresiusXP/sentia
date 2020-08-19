@@ -26,6 +26,24 @@
           "metadata": {
               "description": "Log Analytics Workspace name for diagnostic settings."
           }
+      },
+      "aksObjectId": {
+          "type": "string",
+          "metadata": {
+              "description": "SPN Object ID to be used by AKS"
+          }
+      },
+      "aksClientId": {
+          "type": "string",
+          "metadata": {
+              "description": "SPN Client ID to be used by AKS"
+          }
+      },
+      "aksSPNSecret": {
+          "type": "string",
+          "metadata": {
+              "description": "SPN secret to be used by AKS"
+          }
       }
     },
     "variables": {
@@ -52,21 +70,6 @@
                 "mode": "Incremental",
                 "templateLink": {
                     "uri": "[concat(variables('templatesUri'), 'Storage/storage.json')]"
-                }
-            }
-        },
-        {
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2017-05-10",
-            "name": "networking",
-            "resourceGroup": "[parameters('rgName')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Resources/resourceGroups/', parameters('rgName'))]"
-            ],
-            "properties": {
-                "mode": "Incremental",
-                "templateLink": {
-                    "uri": "[concat(variables('templatesUri'), 'Networking/networking.json')]"
                 }
             }
         },
@@ -113,6 +116,26 @@
         {
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2017-05-10",
+            "name": "redis",
+            "resourceGroup": "[parameters('rgName')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/resourceGroups/', parameters('rgName'))]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('templatesUri'), 'Redis/redis.json')]"
+                },
+                "parameters": {
+                    "workspaceId": {
+                        "value": "[variables('workspaceId')]"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2017-05-10",
             "name": "mySql",
             "resourceGroup": "[parameters('rgName')]",
             "properties": {
@@ -131,6 +154,46 @@
                         "value": "[parameters('secondaryLocation')]"
                     }
                 }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2017-05-10",
+            "name": "aks",
+            "resourceGroup": "[parameters('rgName')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('templatesUri'), 'AKS/aks.json')]"
+                },
+                "parameters": {
+                    "location": {
+                        "value": "[if(equals(copyIndex(),0),parameters('location'),parameters('secondaryLocation'))]"
+                    },
+                    "dnsPrefix": {
+                        "value": "[concat('sentia',copyIndex())]"
+                    },
+                    "existingServicePrincipalObjectId": {
+                        "value": "[parameters('aksObjectId')]"
+                    },
+                    "existingServicePrincipalClientId": {
+                        "value": "[parameters('aksClientId')]"
+                    },
+                    "existingServicePrincipalClientSecret": {
+                        "value": "[parameters('aksSPNSecret')]"
+                    },
+                    "workspaceId": {
+                        "value": "[variables('workspaceId')]"
+                    },
+                    "secondaryNetwork": {
+                        "value": "[if(equals(copyIndex(),0), bool('false'), bool('true'))]"
+                    }
+                }
+            },
+            "copy": {
+                "name": "aksClusters",
+                "count": 1,
+                "mode": "Parallel"
             }
         }
     ],
