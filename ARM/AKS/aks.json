@@ -173,8 +173,7 @@
             "apiVersion": "2020-02-01",
             "location": "[parameters('location')]",
             "dependsOn": [
-                "ClusterSubnetRoleAssignmentDeployment",
-                "networking"
+                "ClusterSubnetRoleAssignmentDeployment"
             ],
             "properties": {
                 "kubernetesVersion": "[parameters('kubernetesVersion')]",
@@ -226,9 +225,6 @@
             "type": "Microsoft.Resources/deployments",
             "name": "ClusterSubnetRoleAssignmentDeployment",
             "apiVersion": "2019-10-01",
-            "dependsOn": [
-                "networking"
-            ],
             "properties": {
                 "mode": "Incremental",
                 "template": {
