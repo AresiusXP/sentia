@@ -2,9 +2,13 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
+      "dateTimeNow": {
+          "type": "string",
+          "defaultValue": "[utcNow('yyyy-MM-ddTHH:mm:ssZ')]"
+      },
       "acrName": {
         "type": "string",
-        "defaultValue": "[concat('acr', uniqueString(utcNow()))]",
+        "defaultValue": "[concat('acr', uniqueString(parameters('dateTimeNow')))]",
         "minLength": 5,
         "maxLength": 50,
         "metadata": {

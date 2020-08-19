@@ -8,7 +8,8 @@
       }
     },
     "variables": {
-      "virtualNetworkName": "[concat('vnet', uniqueString(utcNow()))]",
+      "dateTimeNow": "[utcNow('yyyy-MM-ddTHH:mm:ssZ')]",
+      "virtualNetworkName": "[concat('vnet', uniqueString(variables('dateTimeNow')))]",
       "subnet1Name": "subnet-1",
       "networkSecurityGroupName": "[concat(variables('subnet1Name'), '-nsg')]"
     },

@@ -2,9 +2,13 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
+      "dateTimeNow": {
+          "type": "string",
+          "defaultValue": "[utcNow('yyyy-MM-ddTHH:mm:ssZ')]"
+      },
       "keyVaultName": {
         "type": "string",
-        "defaultValue": "[concat('akv', uniqueString(utcNow()))]",
+        "defaultValue": "[concat('akv', uniqueString(parameters('dateTimeNow')))]",
         "minLength": 5,
         "maxLength": 50,
         "metadata": {

@@ -2,9 +2,13 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
+        "dateTimeNow": {
+            "type": "string",
+            "defaultValue": "[utcNow('yyyy-MM-ddTHH:mm:ssZ')]"
+        },
         "serverName": {
             "type": "string",
-            "defaultValue": "[concat('mysql', uniqueString(utcNow()))]",
+            "defaultValue": "[concat('mysql', uniqueString(parameters('dateTimeNow')))]",
             "metadata": {
                 "description": "Name of the MySQL PaaS instance to be deployed."
             }

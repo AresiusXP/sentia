@@ -113,26 +113,6 @@
         {
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2017-05-10",
-            "name": "redis",
-            "resourceGroup": "[parameters('rgName')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Resources/resourceGroups/', parameters('rgName'))]"
-            ],
-            "properties": {
-                "mode": "Incremental",
-                "templateLink": {
-                    "uri": "[concat(variables('templatesUri'), 'Redis/redis.json')]"
-                },
-                "parameters": {
-                    "workspaceId": {
-                        "value": "[variables('workspaceId')]"
-                    }
-                }
-            }
-        },
-        {
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2017-05-10",
             "name": "mySql",
             "resourceGroup": "[parameters('rgName')]",
             "properties": {
