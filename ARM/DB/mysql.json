@@ -60,6 +60,7 @@
             "type": "int",
             "defaultValue": 5120,
             "minValue": 5120,
+            "maxValue": 2097152,
             "metadata": {
                 "description": "Storage capacity for the MySQL Server instances to be deployed."
             }
@@ -220,7 +221,7 @@
         {
             "type": "Microsoft.KeyVault/vaults/secrets",
             "name": "[concat(parameters('keyVaultName'), '/', variables('secretName'))]",
-            "apiVersion": "2018-02-14",
+            "apiVersion": "2019-09-01",
             "location": "[parameters('location')]",
             "properties": {
                 "value": "[parameters('administratorLoginPassword')]"
@@ -229,7 +230,7 @@
         {
             "type": "Microsoft.KeyVault/vaults/secrets",
             "name": "[concat(parameters('keyVaultName'), '/', variables('adminName'))]",
-            "apiVersion": "2018-02-14",
+            "apiVersion": "2019-09-01",
             "location": "[parameters('location')]",
             "properties": {
                 "value": "[parameters('administratorLogin')]"
@@ -247,7 +248,6 @@
             "dependsOn": [
                 "[parameters('serverName')]"
             ],
-            "kind": "",
             "name": "[parameters('replicaName')]",
             "apiVersion": "2017-12-01",
             "location": "[parameters('secondaryLocation')]",

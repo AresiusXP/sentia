@@ -25,14 +25,14 @@
     "resources": [
         {
             "type": "Microsoft.Resources/resourceGroups",
-            "apiVersion": "2018-05-01",
+            "apiVersion": "2019-05-01",
             "location": "[parameters('location')]",
             "name": "[parameters('rgName')]",
             "properties": {}
         },
         {
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2017-05-10",
+            "apiVersion": "2019-09-01",
             "name": "workspaceDeployment",
             "resourceGroup": "[parameters('rgName')]",
             "dependsOn": [

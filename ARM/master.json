@@ -57,14 +57,14 @@
     "resources": [
         {
             "type": "Microsoft.Resources/resourceGroups",
-            "apiVersion": "2018-05-01",
+            "apiVersion": "2019-05-01",
             "location": "[parameters('location')]",
             "name": "[parameters('rgName')]",
             "properties": {}
         },
         {
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2017-05-10",
+            "apiVersion": "2019-09-01",
             "name": "storageCDN",
             "resourceGroup": "[parameters('rgName')]",
             "dependsOn": [
@@ -79,7 +79,7 @@
         },
         {
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2017-05-10",
+            "apiVersion": "2019-09-01",
             "name": "keyvault",
             "resourceGroup": "[parameters('rgName')]",
             "dependsOn": [
@@ -99,7 +99,7 @@
         },
         {
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2017-05-10",
+            "apiVersion": "2019-09-01",
             "name": "containerRegistry",
             "resourceGroup": "[parameters('rgName')]",
             "dependsOn": [
@@ -119,7 +119,7 @@
         },
         {
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2017-05-10",
+            "apiVersion": "2019-09-01",
             "name": "redis",
             "resourceGroup": "[parameters('rgName')]",
             "dependsOn": [
@@ -139,7 +139,7 @@
         },
         {
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2017-05-10",
+            "apiVersion": "2019-09-01",
             "name": "mySql",
             "resourceGroup": "[parameters('rgName')]",
             "properties": {
@@ -162,7 +162,7 @@
         },
         {
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2017-05-10",
+            "apiVersion": "2019-09-01",
             "name": "[concat('aks', copyIndex())]",
             "resourceGroup": "[parameters('rgName')]",
             "properties": {
@@ -209,13 +209,13 @@
         {
             "type": "Microsoft.Network/dnsZones",
             "name": "[parameters('newZoneName')]",
-            "apiVersion": "2018-05-01",
+            "apiVersion": "2019-05-01",
             "location": "global"
         },
         {
             "type": "Microsoft.Network/dnsZones/A",
             "name": "[concat(parameters('newZoneName'), '/demo1')]",
-            "apiVersion": "2018-05-01",
+            "apiVersion": "2019-05-01",
             "location": "global",
             "dependsOn": [
                 "[parameters('newZoneName')]"
@@ -232,7 +232,7 @@
         {
             "type": "Microsoft.Network/dnsZones/A",
             "name": "[concat(parameters('newZoneName'), '/demo2')]",
-            "apiVersion": "2018-05-01",
+            "apiVersion": "2019-05-01",
             "location": "global",
             "dependsOn": [
                 "[parameters('newZoneName')]"
@@ -249,7 +249,7 @@
         {
             "type": "Microsoft.Network/dnsZones/CNAME",
             "name": "[concat(parameters('newZoneName'), '/www')]",
-            "apiVersion": "2018-05-01",
+            "apiVersion": "2019-05-01",
             "location": "global",
             "dependsOn": [
                 "[parameters('newZoneName')]"
@@ -263,7 +263,7 @@
         },
         {
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2017-05-10",
+            "apiVersion": "2019-09-01",
             "name": "trafficManager",
             "resourceGroup": "[parameters('rgName')]",
             "properties": {
