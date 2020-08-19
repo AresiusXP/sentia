@@ -5,11 +5,14 @@
       "location": {
         "type": "string",
         "defaultValue": "[resourceGroup().location]"
+      },
+      "dateTimeNow": {
+          "type": "string",
+          "defaultValue": "[utcNow('yyyy-MM-ddTHH:mm:ssZ')]"
       }
     },
     "variables": {
-      "dateTimeNow": "[utcNow('yyyy-MM-ddTHH:mm:ssZ')]",
-      "virtualNetworkName": "[concat('vnet', uniqueString(variables('dateTimeNow')))]",
+      "virtualNetworkName": "[concat('vnet', uniqueString(parameters('dateTimeNow')))]",
       "subnet1Name": "subnet-1",
       "networkSecurityGroupName": "[concat(variables('subnet1Name'), '-nsg')]"
     },
