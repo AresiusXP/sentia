@@ -170,10 +170,10 @@
                     "secondary": {
                         "value": "[parameters('secondaryNetwork')]"
                     },
-                    "subnetName": {
+                    "subnet1Name": {
                         "value": "[variables('subnet1Name')]"
                     },
-                    "vnetName": {
+                    "virtualNetworkName": {
                         "value": "[variables('virtualNetworkName')]"
                     }
                 }
