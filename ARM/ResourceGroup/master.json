@@ -129,6 +129,29 @@
                     }
                 }
             }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2017-05-10",
+            "name": "mySql",
+            "resourceGroup": "[parameters('rgName')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('templatesUri'), 'DB/mysql.json')]"
+                },
+                "parameters": {
+                    "administratorLoginPassword": {
+                        "value": "[parameters('mySqlPass')]"
+                    },
+                    "keyvaultName": {
+                        "value": "[reference('keyvault').outputs.keyvaultName.value]"
+                    },
+                    "secondaryLocation": {
+                        "value": "[parameters('secondaryLocation')]"
+                    }
+                }
+            }
         }
     ],
     "outputs": {}
