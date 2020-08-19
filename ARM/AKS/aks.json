@@ -134,12 +134,6 @@
                 "description": "A CIDR notation IP for Docker bridge."
             }
         },
-        "workspaceId": {
-            "type": "string",
-            "metadata": {
-                "description": "Log Analytics Workspace resource ID."
-            }
-        },
         "secondaryNetwork": {
             "type": "bool"
         },
