@@ -1,0 +1,74 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "uniqueDnsName": {
+        "type": "string",
+        "defaultValue": "sentiademo",
+        "metadata": {
+          "description": "Relative DNS name for the traffic manager profile, must be globally unique."
+        }
+      },
+      "primaryLocation": {
+          "type": "string",
+          "metadata": {
+              "description": "Primary location for first external endpoint."
+          }
+      },
+      "secondaryLocation": {
+          "type": "string",
+          "metadata": {
+              "description": "Secondary location for second external endpoint."
+          }
+      }
+    },
+    "resources": [
+      {
+        "apiVersion": "2018-08-01",
+        "type": "Microsoft.Network/trafficManagerProfiles",
+        "name": "ExternalEndpointExample",
+        "location": "global",
+        "properties": {
+          "profileStatus": "Enabled",
+          "trafficRoutingMethod": "Priority",
+          "dnsConfig": {
+            "relativeName": "[parameters('uniqueDnsName')]",
+            "ttl": 30
+          },
+          "monitorConfig": {
+            "protocol": "HTTPS",
+            "port": 443,
+            "path": "/",
+            "expectedStatusCodeRanges": [
+              {
+                "min": 200,
+                "max": 399
+              }
+            ]
+          },
+          "endpoints": [
+            {
+              "name": "endpoint1",
+              "type": "Microsoft.Network/TrafficManagerProfiles/ExternalEndpoints",
+              "properties": {
+                "target": "demo1.sentiademo.com",
+                "endpointStatus": "Enabled",
+                "endpointLocation": "[parameters('primaryLocation')]",
+                "priority": 10
+              }
+            },
+            {
+              "name": "endpoint2",
+              "type": "Microsoft.Network/TrafficManagerProfiles/ExternalEndpoints",
+              "properties": {
+                "target": "demo2.sentiademo.com",
+                "endpointStatus": "Enabled",
+                "endpointLocation": "[parameters('secondaryLocation')]",
+                "priority": 100
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }

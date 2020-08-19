@@ -44,6 +44,10 @@
           "metadata": {
               "description": "SPN secret to be used by AKS"
           }
+      },
+      "newZoneName": {
+          "type": "string",
+          "defaultValue": "sentiademo.com"
       }
     },
     "variables": {
@@ -200,6 +204,81 @@
                 "name": "aksClusters",
                 "count": 2,
                 "mode": "Parallel"
+            }
+        },
+        {
+            "type": "Microsoft.Network/dnsZones",
+            "name": "[parameters('newZoneName')]",
+            "apiVersion": "2018-05-01",
+            "location": "global"
+        },
+        {
+            "type": "Microsoft.Network/dnsZones/A",
+            "name": "[concat(parameters('newZoneName'), '/demo1')]",
+            "apiVersion": "2018-05-01",
+            "location": "global",
+            "dependsOn": [
+                "[parameters('newZoneName')]"
+            ],
+            "properties": {
+                "TTL": 3600,
+                "ARecords": [
+                {
+                    "ipv4Address": "1.2.3.4"
+                }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Network/dnsZones/A",
+            "name": "[concat(parameters('newZoneName'), '/demo2')]",
+            "apiVersion": "2018-05-01",
+            "location": "global",
+            "dependsOn": [
+                "[parameters('newZoneName')]"
+            ],
+            "properties": {
+                "TTL": 3600,
+                "ARecords": [
+                {
+                    "ipv4Address": "1.2.3.5"
+                }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Network/dnsZones/CNAME",
+            "name": "[concat(parameters('newZoneName'), '/www')]",
+            "apiVersion": "2018-05-01",
+            "location": "global",
+            "dependsOn": [
+                "[parameters('newZoneName')]"
+            ],
+            "properties": {
+                "TTL": 3600,
+                "CNAMERecord":{
+                    "ipv4Address": "testsentia.trafficmanager.net"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2017-05-10",
+            "name": "trafficManager",
+            "resourceGroup": "[parameters('rgName')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('templatesUri'), 'TrafficManager/trafficManager.json')]"
+                },
+                "parameters": {
+                    "primaryLocation": {
+                        "value": "[parameters('location')]"
+                    },
+                    "secondaryLocation": {
+                        "value": "[parameters('secondaryLocation')]"
+                    }
+                }
             }
         }
     ],
