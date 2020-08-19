@@ -152,7 +152,7 @@
         "templatesUri": "https://raw.githubusercontent.com/AresiusXP/sentia/master/ARM/",
         "virtualNetworkName": "[concat('vnet', uniqueString(parameters('dateTimeNow')))]",
         "subnet1Name": "[concat('subnet', uniqueString(parameters('dateTimeNow')))]",
-        "networkingName": "[concat('networking', uniqueString(parameters('dateTimeNow')))]",
+        "networkingName": "[concat(parameters('resourceName'), '-', uniqueString(parameters('dateTimeNow')))]",
         "workspaceId": "[resourceId(parameters('omsWorkspaceResourceGroup'), 'Microsoft.OperationalInsights/workspaces', parameters('omsWorkspaceName'))]"
     },
     "resources": [
