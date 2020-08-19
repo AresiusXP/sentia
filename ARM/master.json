@@ -58,7 +58,7 @@
     },
     "variables": {
         "templatesUri": "https://raw.githubusercontent.com/AresiusXP/sentia/master/ARM/",
-        "workspaceId": "[resourceId(subscription().id, parameters('omsWorkspaceResourceGroup'),'Microsoft.OperationalInsights/workspaces', parameters('omsWorkspaceName'))]"
+        "workspaceId": "[concat(subscription().id,'/resourcegroups/', parameters('omsWorkspaceResourceGroup'), 'providers/Microsoft.OperationalInsights/workspaces', parameters('omsWorkspaceName'))]"
     },
     "resources": [
         {

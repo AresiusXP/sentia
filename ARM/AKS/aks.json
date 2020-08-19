@@ -151,13 +151,14 @@
     "variables": {
         "templatesUri": "https://raw.githubusercontent.com/AresiusXP/sentia/master/ARM/",
         "virtualNetworkName": "[concat('vnet', uniqueString(parameters('dateTimeNow')))]",
-        "subnet1Name": "[concat('subnet', uniqueString(parameters('dateTimeNow')))]"
+        "subnet1Name": "[concat('subnet', uniqueString(parameters('dateTimeNow')))]",
+        "networkingName": "[concat('networking', uniqueString(parameters('dateTimeNow')))]"
     },
     "resources": [
         {
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2019-10-01",
-            "name": "[concat('networking', uniqueString(parameters('dateTimeNow')))]",
+            "name": "[variables('networkingName')]" ,
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
@@ -248,7 +249,7 @@
                         {
                             "type": "Microsoft.Network/virtualNetworks/subnets/providers/roleAssignments",
                             "apiVersion": "2019-04-01-preview",
-                            "name": "[concat(reference('networking').outputs.vnetName.value, '/', reference('networking').outputs.subnetName.value, '/Microsoft.Authorization/', guid(resourceGroup().id, deployment().name))]",
+                            "name": "[concat(reference(variables('networkingName')).outputs.vnetName.value, '/', reference(variables('networkingName')).outputs.subnetName.value, '/Microsoft.Authorization/', guid(resourceGroup().id, deployment().name))]",
                             "properties": {
                                 "roleDefinitionId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4d97b98b-1d4f-4787-a291-c67834d212e7')]",
                                 "principalId": "[parameters('existingServicePrincipalObjectId')]",
