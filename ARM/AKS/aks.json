@@ -146,13 +146,20 @@
         "dateTimeNow": {
           "type": "string",
           "defaultValue": "[utcNow('yyyy-MM-ddTHH:mm:ssZ')]"
+        },
+        "omsWorkspaceName": {
+          "type": "string"
+        },
+        "omsWorkspaceResourceGroup": {
+            "type": "string"
         }
     },
     "variables": {
         "templatesUri": "https://raw.githubusercontent.com/AresiusXP/sentia/master/ARM/",
         "virtualNetworkName": "[concat('vnet', uniqueString(parameters('dateTimeNow')))]",
         "subnet1Name": "[concat('subnet', uniqueString(parameters('dateTimeNow')))]",
-        "networkingName": "[concat('networking', uniqueString(parameters('dateTimeNow')))]"
+        "networkingName": "[concat('networking', uniqueString(parameters('dateTimeNow')))]",
+        "workspaceId": "[resourceId(parameters('omsWorkspaceResourceGroup'), 'Microsoft.OperationalInsights/workspaces', parameters('omsWorkspaceName'))]"
     },
     "resources": [
         {
@@ -202,7 +209,7 @@
                     "omsagent": {
                         "enabled": true,
                         "config": {
-                            "logAnalyticsWorkspaceResourceID": "[parameters('workspaceId')]"
+                            "logAnalyticsWorkspaceResourceID": "[variables('workspaceId')]"
                         }
                     }
                 },

@@ -45,9 +45,15 @@
           "description": "Short name for registry replica location."
         }
       },
-      "workspaceId": {
+      "omsWorkspaceName": {
+          "type": "string"
+      },
+      "omsWorkspaceResourceGroup": {
           "type": "string"
       }
+    },
+    "variables": {
+      "workspaceId": "[resourceId(parameters('omsWorkspaceResourceGroup'), 'Microsoft.OperationalInsights/workspaces', parameters('omsWorkspaceName'))]"
     },
     "resources": [
       {
@@ -77,7 +83,7 @@
                 "[resourceId('Microsoft.ContainerRegistry/registries', parameters('acrName'))]"
             ],
             "properties": {
-                "workspaceId": "[parameters('workspaceId')]",
+                "workspaceId": "[variables('workspaceId')]",
                 "logs": [
                     {
                         "category": "ContainerRegistryRepositoryEvents",

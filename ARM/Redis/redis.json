@@ -68,9 +68,15 @@
           "description": "Specify a boolean value that indicates whether to allow access via non-SSL ports."
         }
       },
-      "workspaceId": {
-        "type": "string"
+      "omsWorkspaceName": {
+          "type": "string"
+      },
+      "omsWorkspaceResourceGroup": {
+          "type": "string"
       }
+    },
+    "variables": {
+      "workspaceId": "[resourceId(parameters('omsWorkspaceResourceGroup'), 'Microsoft.OperationalInsights/workspaces', parameters('omsWorkspaceName'))]"
     },
     "resources": [
       {
@@ -97,7 +103,7 @@
               "[resourceId('Microsoft.Cache/Redis', parameters('redisCacheName'))]"
             ],
             "properties": {
-              "workspaceId": "[parameters('workspaceId')]",
+              "workspaceId": "[variables('workspaceId')]",
               "metrics": [
                 {
                   "timeGrain": "AllMetrics",

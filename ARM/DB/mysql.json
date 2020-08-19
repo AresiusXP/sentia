@@ -129,14 +129,18 @@
                 "description": "Secondary location where to host MySQL replica"
             }
         },
-        "workspaceId": {
+        "omsWorkspaceName": {
+          "type": "string"
+        },
+        "omsWorkspaceResourceGroup": {
             "type": "string"
         }
     },
     "variables": {
         "skuName": "[concat(if(equals(parameters('skuTier'),'GeneralPurpose'),'GP',if(equals(parameters('skuTier'),'Basic'),'B',if(equals(parameters('skuTier'),'MemoryOptimized'),'MO',''))),'_',parameters('skuFamily'),'_',parameters('vCPU'))]",
         "secretName": "[concat(parameters('serverName'),'-Password')]",
-        "adminName": "[concat(parameters('serverName'),'-Admin')]"
+        "adminName": "[concat(parameters('serverName'),'-Admin')]",
+        "workspaceId": "[resourceId(parameters('omsWorkspaceResourceGroup'), 'Microsoft.OperationalInsights/workspaces', parameters('omsWorkspaceName'))]"
     },
     "resources": [
         {
@@ -185,7 +189,7 @@
                         "[resourceId('Microsoft.DBforMySQL/servers', parameters('serverName'))]"
                     ],
                     "properties": {
-                    "workspaceId": "[parameters('workspaceId')]",
+                    "workspaceId": "[variables('workspaceId')]",
                     "logs": [
                         {
                             "category": "MySqlSlowLogs",

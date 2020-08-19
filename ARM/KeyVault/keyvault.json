@@ -71,9 +71,15 @@
           "description": "Specifies whether the key vault is a standard vault or a premium vault."
         }
       },
-      "workspaceId": {
+      "omsWorkspaceName": {
+          "type": "string"
+      },
+      "omsWorkspaceResourceGroup": {
           "type": "string"
       }
+    },
+    "variables": {
+      "workspaceId": "[resourceId(parameters('omsWorkspaceResourceGroup'), 'Microsoft.OperationalInsights/workspaces', parameters('omsWorkspaceName'))]"
     },
     "resources": [
       {
@@ -113,7 +119,7 @@
                 "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]"
             ],
             "properties": {
-                "workspaceId": "[parameters('workspaceId')]",
+                "workspaceId": "[variables('workspaceId')]",
                 "logs": [
                     {
                         "category": "AuditEvent",

@@ -57,8 +57,7 @@
       }
     },
     "variables": {
-        "templatesUri": "https://raw.githubusercontent.com/AresiusXP/sentia/master/ARM/",
-        "workspaceId": "[concat(subscription().id,'/resourcegroups/', parameters('omsWorkspaceResourceGroup'), 'providers/Microsoft.OperationalInsights/workspaces', parameters('omsWorkspaceName'))]"
+        "templatesUri": "https://raw.githubusercontent.com/AresiusXP/sentia/master/ARM/"
     },
     "resources": [
         {
@@ -100,8 +99,11 @@
                     "objectId": {
                         "value": "[parameters('spnObjectId')]"
                     },
-                    "workspaceId": {
-                        "value": "[variables('workspaceId')]"
+                    "omsWorkspaceName": {
+                        "value": "[parameters('omsWorkspaceName')]"
+                    },
+                    "omsWorkspaceResourceGroup": {
+                        "value": "[parameters('omsWorkspaceResourceGroup')]"
                     }
                 }
             }
@@ -123,8 +125,11 @@
                     "acrReplicaLocation": {
                         "value": "[parameters('secondaryLocation')]"
                     },
-                    "workspaceId": {
-                        "value": "[variables('workspaceId')]"
+                    "omsWorkspaceName": {
+                        "value": "[parameters('omsWorkspaceName')]"
+                    },
+                    "omsWorkspaceResourceGroup": {
+                        "value": "[parameters('omsWorkspaceResourceGroup')]"
                     }
                 }
             }
@@ -143,8 +148,11 @@
                     "uri": "[concat(variables('templatesUri'), 'Redis/redis.json')]"
                 },
                 "parameters": {
-                    "workspaceId": {
-                        "value": "[variables('workspaceId')]"
+                    "omsWorkspaceName": {
+                        "value": "[parameters('omsWorkspaceName')]"
+                    },
+                    "omsWorkspaceResourceGroup": {
+                        "value": "[parameters('omsWorkspaceResourceGroup')]"
                     }
                 }
             }
@@ -169,8 +177,11 @@
                     "secondaryLocation": {
                         "value": "[parameters('secondaryLocation')]"
                     },
-                    "workspaceId": {
-                        "value": "[variables('workspaceId')]"
+                    "omsWorkspaceName": {
+                        "value": "[parameters('omsWorkspaceName')]"
+                    },
+                    "omsWorkspaceResourceGroup": {
+                        "value": "[parameters('omsWorkspaceResourceGroup')]"
                     }
                 }
             }
@@ -204,8 +215,11 @@
                     "existingServicePrincipalClientSecret": {
                         "value": "[parameters('aksSPNSecret')]"
                     },
-                    "workspaceId": {
-                        "value": "[variables('workspaceId')]"
+                    "omsWorkspaceName": {
+                        "value": "[parameters('omsWorkspaceName')]"
+                    },
+                    "omsWorkspaceResourceGroup": {
+                        "value": "[parameters('omsWorkspaceResourceGroup')]"
                     },
                     "secondaryNetwork": {
                         "value": "[if(equals(copyIndex(),0), bool('false'), bool('true'))]"
