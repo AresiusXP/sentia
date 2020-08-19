@@ -40,7 +40,7 @@
           }
       },
       "aksSPNSecret": {
-          "type": "string",
+          "type": "securestring",
           "metadata": {
               "description": "SPN secret to be used by AKS"
           }
@@ -167,6 +167,9 @@
                     "uri": "[concat(variables('templatesUri'), 'AKS/aks.json')]"
                 },
                 "parameters": {
+                    "resourceName": {
+                        "value": "[concat('aksCluster', copyIndex())]"
+                    },
                     "location": {
                         "value": "[if(equals(copyIndex(),0),parameters('location'),parameters('secondaryLocation'))]"
                     },
