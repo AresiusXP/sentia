@@ -26,7 +26,7 @@
       {
         "apiVersion": "2018-08-01",
         "type": "Microsoft.Network/trafficManagerProfiles",
-        "name": "ExternalEndpointExample",
+        "name": "ExternalEndpoint",
         "location": "global",
         "properties": {
           "profileStatus": "Enabled",
