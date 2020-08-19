@@ -25,3 +25,17 @@ Infrastructure is a high availability layout balancing traffic to a primary regi
 - __Storage Account__: Deployed with SKU `Standard_GRS` so it's replicated accross regions. This provides enough reliability in case of a downtime in the primary region. It's intended for serving files to be hosted by the applications, and it's configured to serve them using a CDN to improve user experience.
 
 - __Container Registry__: Registry destined to be consumed by AKS clusters, providing a geo-replication service (primary and secondary location) for redundancy, and closer geographic access to each cluster, but only having one public endpoint which simplifies it's consumption. Geo-replication requires a `Premium` SKU.
+
+- __Key Vault__: Mandatory for storing secrets for applications. During initial deployment, it's used to store user and password for MySQL database.
+
+- __Networking__: Each AKS cluster is container within its Virtual Network with `/16` mask, and a subnet with `/24` mask. Subnets are linked to Network Security Groups that contain default rules plus an inbound rule allowing traffic to port 443; it's expected for clusters to serve HTTPS traffic.
+
+- __Azure Redis Cache__: Cache service is added to improve connection between applications and database connections. It's mentioned that traffic has been increasing to the sites, which will most likely impact access to databases. A cache implementation will improve any bottleneck, and prevent any future issues.
+
+- __Azure MySQL Database__: Wordpress database requirements specify a need for MySQL databases. Azure provides a PaaS implementation that solves it's installation, and already offers a 99.99% SLA. Its flexibility for implementation and scaling provides a better experience for database management, without compromising expected capabilities. To provide further reliability, a replica is created to a secondary region in a master-slave design. Although switching a slave instance to master is not automatic (it's possible creating an Azure Function), it's expected to an ocurrence where it's needed is extremely rare.
+
+- __Azure Kubernetes Services__: Two clusters, one per region (primary and secondary), with same specifications. Both clusters should contain same services and act in a failover schema. Load balancing between the two is performed by Traffic Manager. 
+
+    Ingress Controller for the clusters are NGINX instances with ModSecurity addon, providing a WAF solution to cover attack vectors.  NGINX Ingress Controller for Kubernetes provides enterprise‑grade delivery services for Kubernetes applications, with benefits for users of both NGINX Open Source and NGINX Plus.
+
+    AKS provides the best solution for flexibility and scalability for any kind of traffic load. Kubernetes pods austoscaling fulfills its need to create replicas of the same application to serve requests. Pod Autoscaling can be set with manual limits, or setting up a Vertical Pod Autoscaling for automatic assessment. With AKS Nodes Autoscaling, provided by its nodes deployed in Virtual Machine Scale Sets, pods replicas will never find themselves unable to be allocated.
