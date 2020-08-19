@@ -249,11 +249,11 @@
                         {
                             "type": "Microsoft.Network/virtualNetworks/subnets/providers/roleAssignments",
                             "apiVersion": "2019-04-01-preview",
-                            "name": "[concat(reference(variables('networkingName')).outputs.vnetName.value, '/', reference(variables('networkingName')).outputs.subnetName.value, '/Microsoft.Authorization/', guid(resourceGroup().id, deployment().name))]",
+                            "name": "[concat(variables('virtualNetworkName'), '/', variables('subnet1Name'), '/Microsoft.Authorization/', guid(resourceGroup().id, deployment().name))]",
                             "properties": {
                                 "roleDefinitionId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4d97b98b-1d4f-4787-a291-c67834d212e7')]",
                                 "principalId": "[parameters('existingServicePrincipalObjectId')]",
-                                "scope": "[reference(variables('networkingName')).outputs.subnet.value]"
+                                "scope": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), variables('subnet1Name'))]"
                             }
                         }
                     ]
