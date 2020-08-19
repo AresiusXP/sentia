@@ -4,7 +4,7 @@
     "parameters": {
       "keyVaultName": {
         "type": "string",
-        "defaultValue": "[concat('akv', uniqueString(resourceGroup().id))]",
+        "defaultValue": "[concat('akv', uniqueString(utcNow().id))]",
         "minLength": 5,
         "maxLength": 50,
         "metadata": {
@@ -102,6 +102,10 @@
         "keyvaultId": {
             "type": "string",
             "value": "[resourceId('Microsoft.Network/keyVaults/', parameters('keyVaultName'))]"
+        },
+        "keyvaultName": {
+          "type": "string",
+          "value": "[parameters('keyVaultName')]"
         }
     }
   }
