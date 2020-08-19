@@ -82,6 +82,14 @@
         "vnet": {
             "type": "string",
             "value": "[resourceId('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
+        },
+        "subnetName": {
+            "type": "string",
+            "value": "[variables('subnet1Name')]"
+        },
+        "vnetName": {
+            "type": "string",
+            "value": "[variables('virtualNetworkName')]"
         }
     }
   }

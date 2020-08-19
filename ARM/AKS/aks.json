@@ -205,7 +205,7 @@
                         "maxCount": 6,
                         "minCount": "[parameters('agentCount')]",
                         "storageProfile": "ManagedDisks",
-                        "vnetSubnetID": "[reference('networking').outputs.subnet.value]",
+                        "vnetSubnetID": "[resourceId('Microsoft.Network/virtualNetworks/subnets', reference('networking').outputs.vnetName.value, reference('networking').outputs.subnetName.value)]",
                         "maxPods": "[parameters('maxPods')]",
                         "type": "VirtualMachineScaleSets"
                     }
@@ -226,6 +226,9 @@
             "type": "Microsoft.Resources/deployments",
             "name": "ClusterSubnetRoleAssignmentDeployment",
             "apiVersion": "2019-10-01",
+            "dependsOn": [
+                "networking"
+            ],
             "properties": {
                 "mode": "Incremental",
                 "template": {
@@ -237,7 +240,7 @@
                         {
                             "type": "Microsoft.Network/virtualNetworks/subnets/providers/roleAssignments",
                             "apiVersion": "2019-04-01-preview",
-                            "name": "[concat(reference('networking').outputs.vnet.value, '/', reference('networking').outputs.subnet.value, '/Microsoft.Authorization/', guid(resourceGroup().id, deployment().name))]",
+                            "name": "[concat(reference('networking').outputs.vnetName.value, '/', reference('networking').outputs.subnetName.value, '/Microsoft.Authorization/', guid(resourceGroup().id, deployment().name))]",
                             "properties": {
                                 "roleDefinitionId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4d97b98b-1d4f-4787-a291-c67834d212e7')]",
                                 "principalId": "[parameters('existingServicePrincipalObjectId')]",
