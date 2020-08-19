@@ -156,7 +156,7 @@
     "resources": [
         {
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2020-07-01",
+            "apiVersion": "2020-06-01",
             "name": "networking",
             "properties": {
                 "mode": "Incremental",
