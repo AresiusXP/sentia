@@ -11,7 +11,7 @@
       "secondaryLocation": {
         "value": "westus"
       },
-      "omsWorkspaceId": {
+      "omsWorkspaceName": {
         "value": "pdanosloganalytics"
       }
     }

@@ -4,7 +4,7 @@
     "parameters": {
       "keyVaultName": {
         "type": "string",
-        "defaultValue": "[concat('akv', uniqueString(utcNow().id))]",
+        "defaultValue": "[concat('akv', uniqueString(utcNow()))]",
         "minLength": 5,
         "maxLength": 50,
         "metadata": {

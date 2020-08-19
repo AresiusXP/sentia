@@ -4,14 +4,14 @@
     "parameters": {
         "serverName": {
             "type": "string",
-            "defaultValue": "[concat('mysql', uniqueString(utcNow().id))]",
+            "defaultValue": "[concat('mysql', uniqueString(utcNow()))]",
             "metadata": {
                 "description": "Name of the MySQL PaaS instance to be deployed."
             }
         },
         "replicaName": {
             "type": "string",
-            "defaultValue": "[concat('replica', uniqueString(utcNow().id))]",
+            "defaultValue": "[concat('replica', uniqueString(utcNow()))]",
             "metadata": {
                 "description": "Name of the MySQL PaaS instance to be deployed."
             }

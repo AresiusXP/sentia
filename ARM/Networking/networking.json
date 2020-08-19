@@ -8,7 +8,7 @@
       }
     },
     "variables": {
-      "virtualNetworkName": "[concat('vnet', uniqueString(utcNow().id))]",
+      "virtualNetworkName": "[concat('vnet', uniqueString(utcNow()))]",
       "subnet1Name": "subnet-1",
       "networkSecurityGroupName": "[concat(variables('subnet1Name'), '-nsg')]"
     },
