@@ -19,6 +19,9 @@
       },
       "aksClientId": {
         "value": "e0e6d050-c767-4ae6-b18a-a6160b499434"
+      },
+      "omsWorkspaceResourceGroup": {
+        "value": "logs"
       }
     }
 }

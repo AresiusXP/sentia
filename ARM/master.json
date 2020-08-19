@@ -27,6 +27,12 @@
               "description": "Log Analytics Workspace name for diagnostic settings."
           }
       },
+      "omsWorkspaceResourceGroup": {
+          "type": "string",
+          "metadata": {
+              "description": "Log Analytics Workspace resource group."
+          }
+      },
       "aksObjectId": {
           "type": "string",
           "metadata": {
@@ -52,7 +58,7 @@
     },
     "variables": {
         "templatesUri": "https://raw.githubusercontent.com/AresiusXP/sentia/master/ARM/",
-        "workspaceId": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('omsWorkspaceName'))]"
+        "workspaceId": "[resourceId(subscription().id, parameters('omsWorkspaceResourceGroup'),'Microsoft.OperationalInsights/workspaces', parameters('omsWorkspaceName'))]"
     },
     "resources": [
         {
@@ -93,6 +99,9 @@
                 "parameters": {
                     "objectId": {
                         "value": "[parameters('spnObjectId')]"
+                    },
+                    "workspaceId": {
+                        "value": "[variables('workspaceId')]"
                     }
                 }
             }
@@ -113,6 +122,9 @@
                 "parameters": {
                     "acrReplicaLocation": {
                         "value": "[parameters('secondaryLocation')]"
+                    },
+                    "workspaceId": {
+                        "value": "[variables('workspaceId')]"
                     }
                 }
             }
@@ -156,6 +168,9 @@
                     },
                     "secondaryLocation": {
                         "value": "[parameters('secondaryLocation')]"
+                    },
+                    "workspaceId": {
+                        "value": "[variables('workspaceId')]"
                     }
                 }
             }

@@ -75,14 +75,6 @@
       }
     ],
     "outputs": {
-        "vnet": {
-            "type": "string",
-            "value": "[reference(parameters('virtualNetworkName'), '2019-04-01', 'Full').resourceId]"
-        },
-        "subnet": {
-            "type": "string",
-            "value": "[reference(parameters('virtualNetworkName'), '2019-04-01', 'Full').subnets[0].resourceId]"
-        },
         "subnetName": {
             "type": "string",
             "value": "[parameters('subnet1Name')]"

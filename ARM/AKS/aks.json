@@ -157,7 +157,7 @@
         {
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2019-10-01",
-            "name": "networking",
+            "name": "[concat('networking', uniqueString(parameters('dateTimeNow')))]",
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
