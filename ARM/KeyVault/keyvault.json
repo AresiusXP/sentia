@@ -70,6 +70,9 @@
         "metadata": {
           "description": "Specifies whether the key vault is a standard vault or a premium vault."
         }
+      },
+      "workspaceId": {
+          "type": "string"
       }
     },
     "resources": [
@@ -99,7 +102,41 @@
               "defaultAction": "Allow",
               "bypass": "AzureServices"
           }
-        }
+        },
+        "resources": [
+          {
+            "type": "Microsoft.KeyVault/vaults/providers/diagnosticsettings",
+            "apiVersion": "2017-05-01-preview",
+            "name": "[concat(parameters('keyVaultName'), '/Microsoft.Insights/', parameters('keyVaultName'))]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]"
+            ],
+            "properties": {
+                "workspaceId": "[parameters('workspaceId')]",
+                "logs": [
+                    {
+                        "category": "AuditEvent",
+                        "enabled": true,
+                        "retentionPolicy": {
+                            "enabled": true,
+                            "days": 90
+                        }
+                    }
+                ],
+                "metrics": [
+                    {
+                        "timeGrain": "AllMetrics",
+                        "enabled": true,
+                        "retentionPolicy": {
+                            "days": 90,
+                            "enabled": "true"
+                        }
+                    }
+                ]
+            }
+          }
+        ]
       }
     ],
     "outputs": {

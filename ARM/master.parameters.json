@@ -12,7 +12,7 @@
         "value": "westus"
       },
       "omsWorkspaceName": {
-        "value": "pdanosloganalytics"
+        "value": "pdanosLogAnalytics"
       },
       "aksObjectId": {
         "value": "4ab42cfc-a28a-4f22-843f-667a6a0200ee"

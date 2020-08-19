@@ -127,6 +127,9 @@
             "metadata": {
                 "description": "Secondary location where to host MySQL replica"
             }
+        },
+        "workspaceId": {
+            "type": "string"
         }
     },
     "variables": {
@@ -170,6 +173,46 @@
                     "properties": {
                         "startIpAddress": "10.0.0.0",
                         "endIpAddress": "10.0.255.255"
+                    }
+                },
+                {
+                    "type": "Microsoft.DBforMySQL/servers/providers/diagnosticsettings",
+                    "apiVersion": "2017-05-01-preview",
+                    "name": "[concat(parameters('serverName'), '/Microsoft.Insights/', parameters('serverName'))]",
+                    "location": "[parameters('location')]",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.DBforMySQL/servers', parameters('serverName'))]"
+                    ],
+                    "properties": {
+                    "workspaceId": "[parameters('workspaceId')]",
+                    "logs": [
+                        {
+                            "category": "MySqlSlowLogs",
+                            "enabled": true,
+                            "retentionPolicy": {
+                                "enabled": true,
+                                "days": 90
+                            }
+                        },
+                        {
+                            "category": "MySqlAuditLogs",
+                            "enabled": true,
+                            "retentionPolicy": {
+                                "enabled": true,
+                                "days": 90
+                            }
+                        }
+                    ],
+                    "metrics": [
+                        {
+                        "timeGrain": "AllMetrics",
+                        "enabled": true,
+                        "retentionPolicy": {
+                            "days": 90,
+                            "enabled": "true"
+                        }
+                        }
+                    ]
                     }
                 }
             ]
@@ -216,7 +259,49 @@
                     "backupRetentionDays": "[parameters('backupRetentionDays')]",
                     "geoRedundantBackup": "[parameters('geoRedundantBackup')]"
                 }
-            }
+            },
+            "resources": [
+                {
+                    "type": "Microsoft.DBforMySQL/servers/providers/diagnosticsettings",
+                    "apiVersion": "2017-05-01-preview",
+                    "name": "[concat(parameters('replicaName'), '/Microsoft.Insights/', parameters('replicaName'))]",
+                    "location": "[parameters('location')]",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.DBforMySQL/servers', parameters('replicaName'))]"
+                    ],
+                    "properties": {
+                        "workspaceId": "[parameters('workspaceId')]",
+                        "logs": [
+                            {
+                                "category": "MySqlSlowLogs",
+                                "enabled": true,
+                                "retentionPolicy": {
+                                    "enabled": true,
+                                    "days": 90
+                                }
+                            },
+                            {
+                                "category": "MySqlAuditLogs",
+                                "enabled": true,
+                                "retentionPolicy": {
+                                    "enabled": true,
+                                    "days": 90
+                                }
+                            }
+                        ],
+                        "metrics": [
+                            {
+                                "timeGrain": "AllMetrics",
+                                "enabled": true,
+                                "retentionPolicy": {
+                                    "days": 90,
+                                    "enabled": "true"
+                                }
+                            }
+                        ]
+                    }
+                }
+            ]
         }
     ],
     "outputs": {}

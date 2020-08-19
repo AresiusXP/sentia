@@ -44,6 +44,9 @@
         "metadata": {
           "description": "Short name for registry replica location."
         }
+      },
+      "workspaceId": {
+          "type": "string"
       }
     },
     "resources": [
@@ -63,7 +66,49 @@
         },
         "properties": {
           "adminUserEnabled": "[parameters('acrAdminUserEnabled')]"
-        }
+        },
+        "resources": [
+          {
+            "type": "Microsoft.ContainerRegistry/registries/providers/diagnosticsettings",
+            "apiVersion": "2017-05-01-preview",
+            "name": "[concat(parameters('acrName'), '/Microsoft.Insights/', parameters('acrName'))]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ContainerRegistry/registries', parameters('acrName'))]"
+            ],
+            "properties": {
+                "workspaceId": "[parameters('workspaceId')]",
+                "logs": [
+                    {
+                        "category": "ContainerRegistryRepositoryEvents",
+                        "enabled": true,
+                        "retentionPolicy": {
+                            "enabled": true,
+                            "days": 90
+                        }
+                    },
+                    {
+                        "category": "ContainerRegistryLoginEvents",
+                        "enabled": true,
+                        "retentionPolicy": {
+                            "enabled": true,
+                            "days": 90
+                        }
+                    }
+                ],
+                "metrics": [
+                    {
+                        "timeGrain": "AllMetrics",
+                        "enabled": true,
+                        "retentionPolicy": {
+                            "days": 90,
+                            "enabled": "true"
+                        }
+                    }
+                ]
+            }
+          }
+        ]
       },
       {
         "name": "[concat(parameters('acrName'), '/', parameters('acrReplicaLocation'))]",
