@@ -159,7 +159,7 @@
         {
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2017-05-10",
-            "name": "aks",
+            "name": "[concat('aks', copyIndex())]",
             "resourceGroup": "[parameters('rgName')]",
             "properties": {
                 "mode": "Incremental",
@@ -198,7 +198,7 @@
             },
             "copy": {
                 "name": "aksClusters",
-                "count": 1,
+                "count": 2,
                 "mode": "Parallel"
             }
         }
