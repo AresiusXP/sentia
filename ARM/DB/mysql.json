@@ -15,7 +15,7 @@
         },
         "replicaName": {
             "type": "string",
-            "defaultValue": "[concat('replica', uniqueString(utcNow()))]",
+            "defaultValue": "[concat('replica', uniqueString(parameters('dateTimeNow')))]",
             "metadata": {
                 "description": "Name of the MySQL PaaS instance to be deployed."
             }
@@ -201,6 +201,9 @@
                 "size": "[parameters('skuSizeMB')]",
                 "family": "[parameters('skuFamily')]"
             },
+            "dependsOn": [
+                "[parameters('serverName')]"
+            ],
             "kind": "",
             "name": "[parameters('replicaName')]",
             "apiVersion": "2017-12-01",
