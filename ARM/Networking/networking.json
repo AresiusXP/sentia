@@ -9,12 +9,18 @@
       "dateTimeNow": {
           "type": "string",
           "defaultValue": "[utcNow('yyyy-MM-ddTHH:mm:ssZ')]"
+      },
+      "secondary": {
+        "type": "bool",
+        "defaultValue": false
       }
     },
     "variables": {
       "virtualNetworkName": "[concat('vnet', uniqueString(parameters('dateTimeNow')))]",
-      "subnet1Name": "subnet-1",
-      "networkSecurityGroupName": "[concat(variables('subnet1Name'), '-nsg')]"
+      "subnet1Name": "[concat('subnet', uniqueString(parameters('dateTimeNow')))]",
+      "networkSecurityGroupName": "[concat(variables('subnet1Name'), '-nsg')]",
+      "addressPrefix": "[if(bool(parameters('secondary')),'10.1.0.0/16','10.0.0.0/16')]",
+      "addressPrefixSubnet": "[if(bool(parameters('secondary')),'10.1.0.0/24','10.0.0.0/24')]"
     },
     "resources": [
       {
@@ -28,14 +34,14 @@
         "properties": {
           "addressSpace": {
             "addressPrefixes": [
-              "10.0.0.0/16"
+              "[variables('addressPrefix')]"
             ]
           },
           "subnets": [
             {
               "name": "[variables('subnet1Name')]",
               "properties": {
-                "addressPrefix": "10.0.0.0/24",
+                "addressPrefix": "[variables('addressPrefixSubnet')]",
                 "networkSecurityGroup": {
                   "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName'))]"
                 }
