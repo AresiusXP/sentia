@@ -205,7 +205,7 @@
                         "maxCount": 6,
                         "minCount": "[parameters('agentCount')]",
                         "storageProfile": "ManagedDisks",
-                        "vnetSubnetID": "[reference('networking').outputs.subnet]",
+                        "vnetSubnetID": "[reference('networking').outputs.subnet.value]",
                         "maxPods": "[parameters('maxPods')]",
                         "type": "VirtualMachineScaleSets"
                     }

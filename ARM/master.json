@@ -190,6 +190,9 @@
                     },
                     "secondaryNetwork": {
                         "value": "[if(equals(copyIndex(),0), bool('false'), bool('true'))]"
+                    },
+                    "kubernetesVersion": {
+                        "value": "1.16.13"
                     }
                 }
             },
