@@ -1,4 +1,4 @@
-# Sentia case of study
+# Sentia case study
 
 Original premise: https://github.com/sentialabs/public-cloud-recruitment/blob/master/ASSIGNEMENT.md
 
@@ -11,7 +11,7 @@ Draw<span></span>.io link: https://drive.google.com/file/d/197FaQdYzgOun2gNo18B4
 
 
 # Architecture decisions
-Infrastructure is a high availability layout balancing traffic to a primary region, but replicating to a secondary region in different fashion for each component. Applications (e.g. Wordpress sites) will be containerized and deployed to Azure Kubernetes Services where we can establish an autoscaling for pods and nodes, and thus adapt to different traffic load.
+Infrastructure is a high availability layout balancing traffic to a primary region, but replicating to a secondary region in different fashion for each component. Applications (e.g. Wordpress sites) will be containerized and deployed to Azure Kubernetes Services where we can establish an autoscaling for pods and nodes, and thus adapt to different traffic loads.
 
 ## Components
 - __Resource Group__: Main resource group containing all components. It was considered to create a second one for replicated/balanced components, but it doesn't really bring any benefits (Resource Groups are only logical containers) and it would increase complexity in ARM template deployment. Location for it is primary region.
