@@ -188,7 +188,7 @@
             "location": "[parameters('location')]",
             "dependsOn": [
                 "ClusterSubnetRoleAssignmentDeployment",
-                "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]"
+                "[variables('networkingName')]"
             ],
             "properties": {
                 "kubernetesVersion": "[parameters('kubernetesVersion')]",
@@ -241,7 +241,7 @@
             "name": "ClusterSubnetRoleAssignmentDeployment",
             "apiVersion": "2019-10-01",
             "dependsOn": [
-                "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]"
+                "[variables('networkingName')]"
             ],
             "properties": {
                 "mode": "Incremental",
