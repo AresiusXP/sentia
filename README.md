@@ -70,3 +70,9 @@ While this scenario already uses several metrics, if monitoring is still lacking
 
 # CI/CD Pipeline
 ![Pipeline](IAD/Pipeline.png)
+
+Basic outline of the pipelines show a workflow that starts from a code commit to the repo. This would trigger a new Build pipeline that would run unit tests on the code (for Wordpress, using [PHPUnit](https://phpunit.de/) and [WP-CLI](https://wp-cli.org/)), and if successful, container image and helm chart will be created and pushed to Azure Container Registry. 
+
+A release pipeline will be triggered monitoring this Container Registry which will run a `helm upgrade` against the clusters simultaneously. In case of rollback, both clusters would be rolled back to previous version.
+
+This CI/CD schema should be present in all stages (Development, QA, UAT, and Prod), and promotion should happen with Pull Requests in the Repo.
