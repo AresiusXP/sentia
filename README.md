@@ -7,6 +7,7 @@
   * [Encryption](#encryption)
   * [Networking](#networking)
 - [Monitoring](#monitoring)
+- [CI/CD Pipeline](#ci-cd-pipeline)
 
 # Sentia case study
 
