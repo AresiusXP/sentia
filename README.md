@@ -46,8 +46,6 @@ Infrastructure is a high availability layout balancing traffic to a primary regi
 
 - __Azure Kubernetes Services__: Two clusters, one per region (primary and secondary), with same specifications. AKS clusters are deployed using `kubenet` networking plugin. Both clusters should contain same services and act in a failover schema. Load balancing between the two is performed by Traffic Manager. 
 
-    Ingress Controller for the clusters are NGINX instances with ModSecurity addon, providing a WAF solution to cover attack vectors.  NGINX Ingress Controller for Kubernetes provides enterprise‑grade delivery services for Kubernetes applications, with benefits for users of both NGINX Open Source and NGINX Plus.
-
     AKS provides the best solution for flexibility and scalability for any kind of traffic load. Kubernetes pods austoscaling fulfills its need to create replicas of the same application to serve requests. Pod Autoscaling can be set with manual limits, or setting up a Vertical Pod Autoscaling for automatic assessment. With AKS Nodes Autoscaling, provided by its nodes deployed in Virtual Machine Scale Sets, pods replicas will never find themselves unable to be allocated.
 
 # Security considerations
@@ -62,6 +60,8 @@ Connection to web services will be encrypted applying TLS certificates that will
 Connections to an Azure Database for MySQL server are first routed through a regional gateway. The gateway has a publicly accessible IP, while the server IP addresses are protected. A newly created Azure Database for MySQL server has a firewall that blocks all external connections by default. ARM template adds a default rule to allow the current virtual network.
 
 As stated above, subnets are contained by Network Security Groups with default rules and allowing inbound traffic for port 443.
+
+Ingress Controller for the clusters are NGINX instances with ModSecurity addon, providing a WAF solution to cover attack vectors.  NGINX Ingress Controller for Kubernetes provides enterprise‑grade delivery services for Kubernetes applications. [ModSecurity-nginx connector info here.](https://kubernetes.github.io/ingress-nginx/user-guide/third-party-addons/modsecurity/)
 
 # Monitoring
 All components are registered to Log Analytics workspace ensuring a full logging capability for the platform. On top of that, [Azure Monitor for Containers](https://docs.microsoft.com/en-us/azure/azure-monitor/insights/container-insights-overview) provide metrics for microservices. 
