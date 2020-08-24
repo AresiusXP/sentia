@@ -43,7 +43,7 @@ Infrastructure is a high availability layout balancing traffic to a primary regi
 
 - __Azure MySQL Database__: Wordpress database requirements specify a need for MySQL databases. Azure provides a PaaS implementation that solves it's installation, and already offers a 99.99% SLA. Its flexibility for implementation and scaling provides a better experience for database management, without compromising expected capabilities. To provide further reliability, a replica is created to a secondary region in a master-slave design. Although switching a slave instance to master is not automatic (it's possible creating an Azure Function), it's expected to an ocurrence where it's needed is extremely rare.
 
-- __Azure Kubernetes Services__: Two clusters, one per region (primary and secondary), with same specifications. Both clusters should contain same services and act in a failover schema. Load balancing between the two is performed by Traffic Manager. 
+- __Azure Kubernetes Services__: Two clusters, one per region (primary and secondary), with same specifications. AKS clusters are deployed using `kubenet` networking plugin. Both clusters should contain same services and act in a failover schema. Load balancing between the two is performed by Traffic Manager. 
 
     Ingress Controller for the clusters are NGINX instances with ModSecurity addon, providing a WAF solution to cover attack vectors.  NGINX Ingress Controller for Kubernetes provides enterprise‑grade delivery services for Kubernetes applications, with benefits for users of both NGINX Open Source and NGINX Plus.
 
@@ -58,8 +58,6 @@ Storage account also has the capability. At deployment, at-rest encryption is im
 Connection to web services will be encrypted applying TLS certificates that will be created in AKS as secrets, and used later by ingress resources. _Note: TLS certificate was not included in the architecture diagram assuming it will be issued by some procurement process. However, it could be deployed using an App Service Certificate, and validating it with the already deployed DNS zone._
 
 ## Networking
-AKS cluster is deployed using `kubenet` networking plugin. This ensures that pods are contained behind a NAT and not exposed to the virtual network, as opposed to `Azure CNI` plugin.
-
 Connections to an Azure Database for MySQL server are first routed through a regional gateway. The gateway has a publicly accessible IP, while the server IP addresses are protected. A newly created Azure Database for MySQL server has a firewall that blocks all external connections by default. ARM template adds a default rule to allow the current virtual network.
 
 As stated above, subnets are contained by Network Security Groups with default rules and allowing inbound traffic for port 443.
@@ -68,3 +66,6 @@ As stated above, subnets are contained by Network Security Groups with default r
 All components are registered to Log Analytics workspace ensuring a full logging capability for the platform. On top of that, [Azure Monitor for Containers](https://docs.microsoft.com/en-us/azure/azure-monitor/insights/container-insights-overview) provide metrics for microservices. 
 
 While this scenario already uses several metrics, if monitoring is still lacking metrics, Prometheus metrics support is offered by Azure Monitor and it's easily deployable. [More info here.](https://docs.microsoft.com/en-us/azure/azure-monitor/insights/container-insights-prometheus-integration)
+
+# CI/CD Pipeline
+![Pipeline](IAD/Pipeline.png)

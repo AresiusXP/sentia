@@ -234,7 +234,81 @@
                     "dnsServiceIP": "[parameters('dnsServiceIP')]",
                     "dockerBridgeCidr": "[parameters('dockerBridgeCidr')]"
                 }
+            },
+            "resources": [
+          {
+            "type": "Microsoft.KeyVault/vaults/providers/diagnosticsettings",
+            "apiVersion": "2017-05-01-preview",
+            "name": "[concat(parameters('resourceName'), '/Microsoft.Insights/', parameters('resourceName'))]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('resourceName'))]"
+            ],
+            "properties": {
+                "workspaceId": "[variables('workspaceId')]",
+                "logs": [
+                    {
+                        "category": "kube-apiserver",
+                        "enabled": true,
+                        "retentionPolicy": {
+                            "enabled": true,
+                            "days": 90
+                        }
+                    },
+                    {
+                        "category": "kube-audit",
+                        "enabled": true,
+                        "retentionPolicy": {
+                            "enabled": true,
+                            "days": 90
+                        }
+                    },
+                    {
+                        "category": "kube-audit-admin",
+                        "enabled": true,
+                        "retentionPolicy": {
+                            "enabled": true,
+                            "days": 90
+                        }
+                    },
+                    {
+                        "category": "kube-controller-manager",
+                        "enabled": true,
+                        "retentionPolicy": {
+                            "enabled": true,
+                            "days": 90
+                        }
+                    },
+                    {
+                        "category": "kube-scheduler",
+                        "enabled": true,
+                        "retentionPolicy": {
+                            "enabled": true,
+                            "days": 90
+                        }
+                    },
+                    {
+                        "category": "cluster-autoscaler",
+                        "enabled": true,
+                        "retentionPolicy": {
+                            "enabled": true,
+                            "days": 90
+                        }
+                    }
+                ],
+                "metrics": [
+                    {
+                        "timeGrain": "AllMetrics",
+                        "enabled": true,
+                        "retentionPolicy": {
+                            "days": 90,
+                            "enabled": "true"
+                        }
+                    }
+                ]
             }
+          }
+        ]
         },
         {
             "type": "Microsoft.Resources/deployments",
